@@ -15,7 +15,7 @@ class RecipeCollection {
         if (name) {
             this._recipeCollection.push(name);
             // save collection to localstorage
-            localStorage.setItem('collectionData', this._recipeCollection);
+            localStorage.setItem('collectionData', JSON.stringify(this._recipeCollection));
             nameInput.value = '';
         }
     }
@@ -29,30 +29,35 @@ const handleClick = () => {
 }
 
 const collection = new RecipeCollection()
+const firstData = collection.recipeCollection
 
-const collectionFn = () => {
+const collectionFn = (content = firstData) => {
     const collectionContent = document.querySelector('.collectionContent');
-    let collectionData = localStorage.getItem('collectionData'); // fetch location from localstorage
-    if (collection.recipeCollection.length === 0) {
+    console.log(content)
+    if (content.length === 0) {
         collectionContent.innerHTML = `
     <h1>Currently you don’t have any recipe collections </h1>
     <button onclick="handleClick()">Add Collection</button>
     `
     } else {
         let collections = ""
-        collection.recipeCollection.forEach(data => {
-            collections += `<p>${data}</p>`
+        content.forEach((data, index) => {
+            collections += ` <a href="./collection.html?id=${index}"><p id="${index}">${data}</p></a>`
         })
         collectionContent.innerHTML = `
         <h1>Your Collections</h1>
         <div>${collections}</div>
-        <button onclick="handleClick()">Add Collection</button>
+       <button onclick="handleClick()">Add Collection</button>
         `
     }
 }
 
-collectionFn();
-
+let collectionData = JSON.parse(localStorage.getItem('collectionData')); // fetch location from localstorage
+if (collectionData) {
+    collectionFn(collectionData);
+} else {
+    collectionFn();
+}
 
 // submit the form and add new collection then display
 const collectionForm = document.querySelector('#collectionForm');
