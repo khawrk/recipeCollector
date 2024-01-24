@@ -1,4 +1,3 @@
-
 class RecipeCollection {
     constructor() {
         this._recipeCollection = [];
