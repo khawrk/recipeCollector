@@ -6,17 +6,52 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Collections</title>
     <link rel="stylesheet" href="./SCSS/styles.css">
+    <script src="./RecipeCollection.js" defer></script>
+    <script src="./recipe.js"></script>
+    <script src="./collection.js" defer></script>
 </head>
 
 <body>
     <div class="main-wrapper">
         <div class="collectionInfo">
+
+        </div>
+
+        <div id="recipeInfo">
+
+        </div>
+
+        <div id="addRecipeDiv" style="display: none;">
+            <h2>Add Recipe</h2>
+            <form id="addRecipeForm">
+                <label for="recipeName">Recipe Name</label>
+                <input type="text" name="recipeName" id="recipeNameInput" placeholder="Pad Thai" required>
+                <label for="recipeImageURL">Recipe Imag URL</label>
+                <input type="text" name="recipeImage" id="recipeImageInput"
+                    placeholder="https://images.media-allrecipes.com/userphotos/720x405/815964.jpg" required>
+                <h3>Ingredients</h3>
+                <textarea name="Ingredients" id="Ingredients" cols="30" rows="5" placeholder="shrimp 300g"></textarea>
+                <button type="submit">Add Recipe</button>
+                <button id="cancelBtn">Cancel</button>
+            </form>
+        </div>
+        <div id="editForm" style="display: none;">
+            <form id="editCollectionForm">
+                <label for="editInput">New Collection Name</label>
+                <input type="text" class="editInput" required>
+                <button type="submit" id="saveChangesBtn">Save Changes</button>
+                <button id="cancelEdit">Cancel</button>
+            </form>
+        </div>
+
+        <div class="collectionBtns">
+            <button id="editCollectionBtn">Edit Collection</button>
+            <button id="deleteCollectionBtn">Delete Collection</button>
         </div>
     </div>
     <footer>
         <p>Made with ❤️</p>
     </footer>
-    <script src="./collection.js"></script>
 </body>
 
 </html>

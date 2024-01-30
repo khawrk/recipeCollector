@@ -1,34 +1,37 @@
-class RecipeCollection {
-    constructor() {
-        this._recipeCollection = [];
-    }
+document.addEventListener("DOMContentLoaded", function () {
+    var overlay = document.getElementById("overlay");
 
-    get recipeCollection() {
-        return this._recipeCollection;
-    }
+    // Show overlay
+    overlay.style.display = "block";
 
-    // add recipe
-    addRecipe() {
-        const nameInput = document.querySelector("#collectionNameInput")
-        const name = nameInput.value;
-        if (name) {
-            this._recipeCollection.push(name);
-            // save collection to localstorage
-            localStorage.setItem('collectionData', JSON.stringify(this._recipeCollection));
-            nameInput.value = '';
-        }
-    }
-
-}
+    // Hide overlay after 5 seconds
+    setTimeout(function () {
+        overlay.style.opacity = "0";
+        setTimeout(function () {
+            overlay.style.display = "none";
+        }, 600);
+    }, 3000);
+});
 
 // click add collection to show the form
 const addCollectionForm = document.querySelector('.addCollectionForm');
+
 const handleClick = () => {
     addCollectionForm.style.display = 'block';
 }
 
-const collection = new RecipeCollection()
-const firstData = collection.recipeCollection
+// get data from localstorage
+const collectionFromLocalStorage = JSON.parse(localStorage.getItem('collectionData'));
+console.log(collectionFromLocalStorage)
+let firstData;
+let collection;
+if (collectionFromLocalStorage) {
+    collection = new RecipeCollection(collectionFromLocalStorage);
+    firstData = collection.recipeCollection;
+} else {
+    collection = new RecipeCollection();
+    firstData = collection.recipeCollection;
+}
 
 const collectionFn = (content = firstData) => {
     const collectionContent = document.querySelector('.collectionContent');
@@ -36,17 +39,18 @@ const collectionFn = (content = firstData) => {
     if (content.length === 0) {
         collectionContent.innerHTML = `
     <h1>Currently you don’t have any recipe collections </h1>
-    <button onclick="handleClick()">Add Collection</button>
+    <button id="addCollectionBtn" onclick="handleClick()">Add Collection</button>
     `
     } else {
         let collections = ""
         content.forEach((data, index) => {
-            collections += ` <a href="./collection.html?id=${index}"><p id="${index}">${data}</p></a>`
+            collections += ` <li><a href="./collection.html?id=${index}"><p id="${index}"><i class="fa-solid fa-utensils" style="color: #70b9be;"></i> ${data}</p></a></li>`
         })
         collectionContent.innerHTML = `
         <h1>Your Collections</h1>
-        <div>${collections}</div>
-       <button onclick="handleClick()">Add Collection</button>
+        <div>
+<ul>${collections}</ul></div>
+       <button id="addCollectionBtn" onclick="handleClick()">Add Collection</button>
         `
     }
 }
@@ -66,3 +70,4 @@ collectionForm.addEventListener('submit', (e) => {
     addCollectionForm.style.display = 'none';
     collectionFn();
 })
+
